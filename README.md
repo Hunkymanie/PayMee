@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 💰 PayMe - Modern Financial Dashboard
 
 A beautiful, responsive financial dashboard built with Next.js 15, React 19, and TypeScript. PayMe provides comprehensive financial management capabilities with modern UI/UX design patterns.
@@ -101,7 +102,7 @@ paymee/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/paymee.git
+   git clone https://github.com/hunkymanie/paymee.git
    cd paymee
    ```
 
@@ -200,3 +201,7 @@ This project is licensed under the MIT License.
 ---
 
 ⭐ **Star this repository if you found it helpful!**
+=======
+# PayMee
+Fintech dashboard
+>>>>>>> c4e932791aec3cb134e214d12c639c7441710010
