@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { Eye, EyeOff, Mail, Lock, CheckCircle } from 'lucide-react'
+import SupabaseTest from '@/components/SupabaseTest'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
@@ -98,6 +99,11 @@ export default function Login() {
       </div>
 
       <div className="mt-6 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        {/* Debug component - remove in production */}
+        <div className="mb-4">
+          <SupabaseTest />
+        </div>
+        
         <div className="bg-white py-6 sm:py-8 px-4 sm:px-10 shadow-xl shadow-blue-100/50 sm:rounded-2xl border sm:border-0 border-gray-200">
           {showConfirmation && (
             <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
