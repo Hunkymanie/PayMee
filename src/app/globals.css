@@ -10,7 +10,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #fafbff 0%, #f1f5f9 100%);
+  background: #ffffff;
   color: var(--foreground);
   font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.5;
@@ -23,9 +23,8 @@ body {
 }
 
 .compact-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   box-shadow: var(--card-shadow);
   transition: all 0.2s ease;
 }
@@ -58,7 +57,7 @@ body {
 }
 
 .search-input:focus {
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 }

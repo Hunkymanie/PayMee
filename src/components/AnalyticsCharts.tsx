@@ -1,8 +1,6 @@
 'use client'
 
 import { 
-  LineChart, 
-  Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -32,11 +30,11 @@ export default function AnalyticsCharts() {
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
+                <div className="w-3 h-3 bg-blue-600 rounded-full" />
                 <span className="text-sm font-medium text-slate-600">Income</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-gradient-to-r from-red-400 to-red-500 rounded-full" />
+                <div className="w-3 h-3 bg-red-500 rounded-full" />
                 <span className="text-sm font-medium text-slate-600">Expenses</span>
               </div>
             </div>

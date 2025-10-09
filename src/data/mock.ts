@@ -1,11 +1,111 @@
 import { Transaction, Card, Account, User, DashboardStats } from '@/types'
 
+// Generate dynamic cards for a user
+const generateCardsForUser = (userId: string, userEmail: string): Card[] => {
+  // Generate ONE PayMe card per user
+  const seed = userId + userEmail
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash // Convert to 32-bit integer
+  }
+  
+  // Use absolute value to ensure positive number
+  const seedNum = Math.abs(hash)
+  
+  // Generate PayMe card number - always starts with 5399 (PayMe prefix)
+  const prefix = '5399'
+  let remainingDigits = ''
+  let currentSeed = seedNum
+  
+  for (let i = 0; i < 12; i++) {
+    remainingDigits += (currentSeed % 10).toString()
+    currentSeed = Math.floor(currentSeed / 10) + i // Add variation
+  }
+  
+  const cardNumber = prefix + remainingDigits
+  const last4 = cardNumber.slice(-4)
+  
+  // Generate expiry date (2-4 years from now)
+  const yearsToAdd = (seedNum % 3) + 2 // 2-4 years
+  const monthsToAdd = (seedNum % 12) + 1 // 1-12 months
+  
+  const currentDate = new Date()
+  const expiryDate = new Date(currentDate.getFullYear() + yearsToAdd, monthsToAdd - 1)
+  
+  const month = (expiryDate.getMonth() + 1).toString().padStart(2, '0')
+  const year = expiryDate.getFullYear().toString().slice(-2)
+  const expiryString = `${month}/${year}`
+  
+  // Generate balance based on user (between 500k and 5M Naira)
+  const balanceMultiplier = seedNum % 4500000
+  const balance = 500000 + balanceMultiplier
+  
+  return [{
+    id: '1',
+    type: 'debit',
+    last4: last4,
+    bank: 'PayMe Bank',
+    expiryDate: expiryString,
+    balance: balance,
+    isActive: true,
+    color: 'bg-blue-600'
+  }]
+}
+
+// Function to generate mock user data based on actual user
+export const generateMockUser = (actualUser?: { 
+  user_metadata?: { full_name?: string, phone?: string }; 
+  email?: string;
+  phone?: string;
+}): User => {
+  let firstName = 'User'
+  let lastName = 'Name'
+  let email = 'user@example.com'
+
+  if (actualUser?.user_metadata?.full_name) {
+    const nameParts = actualUser.user_metadata.full_name.split(' ')
+    firstName = nameParts[0] || 'User'
+    lastName = nameParts.slice(1).join(' ') || 'Name'
+  } else if (actualUser?.email) {
+    const emailName = actualUser.email.split('@')[0]
+    firstName = emailName.charAt(0).toUpperCase() + emailName.slice(1)
+  }
+
+  if (actualUser?.email) {
+    email = actualUser.email
+  }
+
+  return {
+    id: actualUser?.email ? btoa(actualUser.email).slice(0, 8) : '1', // Generate consistent ID from email
+    firstName,
+    lastName,
+    email,
+    phone: actualUser?.user_metadata?.phone || actualUser?.phone || '',
+    bvn: '12345678901',
+    nin: '12345678901234567890',
+    address: {
+      street: '15 Admiralty Way',
+      city: 'Lekki',
+      state: 'Lagos',
+      country: 'Nigeria'
+    }
+  }
+}
+
+// Function to generate user-specific cards
+export const generateUserCards = (user: { id: string; email: string }): Card[] => {
+  return generateCardsForUser(user.id, user.email)
+}
+
+// Default mock user for fallback
 export const mockUser: User = {
   id: '1',
-  firstName: 'Adebayo',
-  lastName: 'Ogundimu',
-  email: 'adebayo.ogundimu@example.com',
-  phone: '+234 803 123 4567',
+  firstName: 'User',
+  lastName: 'Name',
+  email: 'user@example.com',
+  phone: '',
   bvn: '12345678901',
   nin: '12345678901234567890',
   address: {
@@ -51,31 +151,11 @@ export const mockCards: Card[] = [
     id: '1',
     type: 'debit',
     last4: '4756',
-    bank: 'GTBank',
+    bank: 'PayMe Bank',
     expiryDate: '12/26',
     balance: 2500000,
     isActive: true,
-    color: 'bg-gradient-to-br from-blue-600 to-blue-800'
-  },
-  {
-    id: '2',
-    type: 'credit',
-    last4: '8901',
-    bank: 'Access Bank',
-    expiryDate: '08/27',
-    balance: 1000000,
-    isActive: true,
-    color: 'bg-gradient-to-br from-purple-600 to-purple-800'
-  },
-  {
-    id: '3',
-    type: 'debit',
-    last4: '2345',
-    bank: 'Zenith Bank',
-    expiryDate: '03/25',
-    balance: 750000,
-    isActive: false,
-    color: 'bg-gradient-to-br from-gray-600 to-gray-800'
+    color: 'bg-blue-600'
   }
 ]
 

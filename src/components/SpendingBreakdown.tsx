@@ -68,14 +68,8 @@ export default function SpendingBreakdown() {
               )
             })}
             
-            {/* Center circle with gradient */}
-            <defs>
-              <linearGradient id="centerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{stopColor:'#f8fafc', stopOpacity:1}} />
-                <stop offset="100%" style={{stopColor:'#e2e8f0', stopOpacity:1}} />
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="18" fill="url(#centerGradient)" stroke="#e2e8f0" strokeWidth="1" />
+            {/* Center circle */}
+            <circle cx="50" cy="50" r="18" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1" />
           </svg>
           
           {/* Center text */}
@@ -126,7 +120,7 @@ export default function SpendingBreakdown() {
       </div>
       
       {/* Summary Card */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-100">
+      <div className="bg-blue-50 rounded-lg p-2 border border-blue-100">
         <div className="flex items-center justify-between">
           <div>
             <p className="font-medium text-blue-900 text-sm">Monthly Spending</p>

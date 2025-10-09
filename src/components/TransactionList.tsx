@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { mockTransactions } from '@/data/mock'
 import { formatCurrency, formatDate, cn } from '@/lib/utils'
+import { useTransactionContext } from '@/contexts/TransactionContext'
 import { 
   ArrowUpIcon,
   ArrowDownIcon,
@@ -23,35 +22,24 @@ const getTransactionIcon = (type: string) => {
 }
 
 export default function TransactionList() {
-  const [filter, setFilter] = useState('all')
-  const [sortBy, setSortBy] = useState('date')
-
-  const filteredTransactions = mockTransactions.filter(transaction => {
-    if (filter === 'all') return true
-    return transaction.type === filter
-  })
+  const { 
+    transactions: filteredTransactions, 
+    sortBy, 
+    setSortBy,
+    filteredCount 
+  } = useTransactionContext()
 
   return (
     <div className="compact-card rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-lg font-semibold text-slate-900">Transaction History</h3>
-          <p className="text-slate-500 text-sm mt-1">{filteredTransactions.length} transactions this month</p>
+          <p className="text-slate-500 text-sm mt-1">{filteredCount} transactions found</p>
         </div>
         <div className="flex items-center gap-3">
           <select 
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            className="text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="all">All Types</option>
-            <option value="income">Income</option>
-            <option value="expense">Expenses</option>
-            <option value="transfer">Transfers</option>
-          </select>
-          <select 
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e) => setSortBy(e.target.value as 'date' | 'amount' | 'type')}
             className="text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
           >
             <option value="date">Latest First</option>
@@ -154,7 +142,7 @@ export default function TransactionList() {
       {/* Footer */}
       <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
         <p className="text-sm text-slate-500">
-          Showing {filteredTransactions.length} of {mockTransactions.length} transactions
+          Showing {filteredCount} transactions
         </p>
         <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
           Load more

@@ -1,6 +1,8 @@
 import DashboardLayout from '@/components/DashboardLayout'
 import TransactionList from '@/components/TransactionList'
 import TransactionFilters from '@/components/TransactionFilters'
+import { TransactionProvider } from '@/contexts/TransactionContext'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { formatCurrency } from '@/lib/utils'
 import { mockTransactions } from '@/data/mock'
 import {
@@ -24,26 +26,28 @@ export default function TransactionsPage() {
     .filter(t => t.status === 'pending').length
 
   return (
-    <DashboardLayout>
-      <div className="space-y-4">
-        {/* Modern Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">Transactions</h1>
-            <p className="text-slate-600 text-sm">
-              Monitor your financial activity and spending patterns
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-3 py-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all duration-200 font-medium text-sm">
-              Export
-            </button>
-            <button className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium shadow-lg shadow-blue-600/25 text-sm">
-              <PlusIcon className="h-4 w-4" />
-              Add Transaction
-            </button>
-          </div>
-        </div>
+    <ProtectedRoute>
+      <DashboardLayout>
+        <TransactionProvider>
+          <div className="space-y-4">
+            {/* Modern Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-xl font-bold text-slate-900 tracking-tight">Transactions</h1>
+                <p className="text-slate-600 text-sm">
+                  Monitor your financial activity and spending patterns
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="flex items-center gap-2 px-3 py-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all duration-200 font-medium text-sm">
+                  Export
+                </button>
+                <button className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 font-medium shadow-lg shadow-blue-600/25 text-sm">
+                  <PlusIcon className="h-4 w-4" />
+                  Add Transaction
+                </button>
+              </div>
+            </div>
         
         {/* Modern Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -104,10 +108,12 @@ export default function TransactionsPage() {
             </div>
           </div>
         </div>
-        
-        <TransactionFilters />
-        <TransactionList />
-      </div>
-    </DashboardLayout>
+            
+            <TransactionFilters />
+            <TransactionList />
+          </div>
+        </TransactionProvider>
+      </DashboardLayout>
+    </ProtectedRoute>
   )
 }

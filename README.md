@@ -1,207 +1,268 @@
-<<<<<<< HEAD
-# 💰 PayMe - Modern Financial Dashboard
+# PayMe - Financial Dashboard with Supabase Authentication
 
-A beautiful, responsive financial dashboard built with Next.js 15, React 19, and TypeScript. PayMe provides comprehensive financial management capabilities with modern UI/UX design patterns.
+A modern, responsive financial dashboard built with Next.js 15, React 19, TypeScript, and Supabase authentication.
 
-## ✨ Features
+## Features
 
-### 🏠 **Dashboard Overview**
-- Real-time account balance display
-- Money in/out tracking with growth indicators
-- Interactive balance chart with historical data
-- Recent transactions overview
-- Quick action buttons for common tasks
+### 🔐 Authentication
+- **Google OAuth** sign-in via Supabase
+- Protected routes with authentication middleware
+- User profile management with avatar support
+- Secure logout functionality
 
-### 📊 **Analytics & Insights**
-- Spending breakdown by category (pie chart)
-- Income vs expenses trends (line chart)
-- Monthly financial performance metrics
-- Visual data representation with Recharts
+### 📊 Dashboard
+- Real-time financial overview
+- Interactive charts and analytics
+- Transaction management
+- Card management with flip animation
+- Spending breakdown and insights
 
-### 💳 **Transaction Management**
-- Comprehensive transaction history
-- Advanced filtering and search capabilities
-- Transaction status tracking (completed, pending, failed)
-- Export functionality for financial records
+### 🎨 Modern UI/UX
+- Responsive design with Tailwind CSS
+- Glassmorphism effects and animations
+- Mobile-first approach
+- Dark mode ready
 
-### 🃏 **Card Management**
-- Multiple payment card support
-- Card balance and status overview
-- 3D card flip animations
-- Add/remove card functionality
+## Tech Stack
 
-### ⚙️ **Settings & Profile**
-- User profile management
-- Security settings
-- Notification preferences
-- Account customization
+- **Framework**: Next.js 15 with App Router
+- **Frontend**: React 19, TypeScript
+- **Styling**: Tailwind CSS v4
+- **Authentication**: Supabase Auth with Google OAuth
+- **Charts**: Recharts
+- **Icons**: Heroicons
+- **Build Tool**: Turbopack
 
-## 🚀 Tech Stack
-
-### **Frontend Framework**
-- **Next.js 15.5.4** - React framework with App Router
-- **React 19.1.0** - Latest React with concurrent features
-- **TypeScript 5** - Type safety and enhanced developer experience
-
-### **Styling & UI**
-- **Tailwind CSS v4** - Utility-first CSS framework
-- **Custom CSS** - Advanced animations and glassmorphism effects
-- **Heroicons** - Beautiful SVG icons
-- **Responsive Design** - Mobile-first approach
-
-### **Data Visualization**
-- **Recharts** - Powerful charting library for React
-- **Interactive Charts** - Line charts, pie charts, area charts
-
-### **Development Tools**
-- **Turbopack** - Fast bundler for Next.js
-- **ESLint** - Code quality and consistency
-- **PostCSS** - CSS processing
-
-## 📁 Project Structure
-
-```
-paymee/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── page.tsx           # Dashboard homepage
-│   │   ├── analytics/         # Financial analytics
-│   │   ├── transactions/      # Transaction management
-│   │   ├── cards/            # Payment cards
-│   │   └── settings/         # User settings
-│   │
-│   ├── components/           # Reusable UI components
-│   │   ├── DashboardLayout.tsx    # Main layout wrapper
-│   │   ├── BalanceChart.tsx       # Balance visualization
-│   │   ├── TransactionList.tsx    # Transaction table
-│   │   ├── AnalyticsCharts.tsx    # Analytics charts
-│   │   └── ...more components
-│   │
-│   ├── data/                # Mock data for development
-│   │   └── mock.ts         # Sample transactions and users
-│   │
-│   ├── lib/                # Utility functions
-│   │   └── utils.ts       # Formatters and helpers
-│   │
-│   └── types/             # TypeScript type definitions
-│       └── index.ts      # Interface definitions
-│
-├── public/               # Static assets
-├── package.json         # Dependencies and scripts
-├── tailwind.config.ts  # Tailwind configuration
-└── tsconfig.json      # TypeScript configuration
-```
-
-## 🛠️ Installation & Setup
+## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+ 
-- npm or yarn or pnpm
+- A Supabase account
+- Google OAuth credentials (for authentication)
 
-### Quick Start
+### 1. Clone the Repository
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/hunkymanie/paymee.git
+cd paymee
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Set Up Supabase
+
+1. **Create a Supabase Project**
+   - Go to [supabase.com](https://supabase.com)
+   - Create a new project
+   - Wait for the database to set up
+
+2. **Configure Google OAuth**
+   - In your Supabase dashboard, go to Authentication > Providers
+   - Enable Google provider
+   - Add your Google OAuth credentials:
+     - Client ID
+     - Client Secret
+   - Set the redirect URL to: `http://localhost:3000/auth/callback`
+
+3. **Get Your Supabase Credentials**
+   - Go to Settings > API
+   - Copy your project URL and anon public key
+
+### 4. Environment Setup
+
+1. **Copy the environment example**:
    ```bash
-   git clone https://github.com/hunkymanie/paymee.git
-   cd paymee
+   cp .env.local.example .env.local
    ```
 
-2. **Install dependencies**
-   ```bash
-   npm install
+2. **Update .env.local** with your Supabase credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
    ```
 
-3. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+### 5. Configure Google OAuth (Optional - for production)
 
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+If you want to set up Google OAuth:
 
-## 📝 Available Scripts
+1. **Google Cloud Console**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com)
+   - Create a new project or select existing
+   - Enable Google+ API
+   - Create OAuth 2.0 credentials
+   - Add authorized redirect URIs:
+     - `http://localhost:3000/auth/callback` (development)
+     - `https://your-domain.com/auth/callback` (production)
 
-- `npm run dev` - Start development server with Turbopack
+2. **Add credentials to Supabase**:
+   - In Supabase dashboard: Authentication > Providers > Google
+   - Add your Client ID and Client Secret
+
+### 6. Run the Development Server
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the application.
+
+## Authentication Flow
+
+### How It Works
+
+1. **User visits protected route** → Redirected to login page
+2. **User clicks "Continue with Google"** → Redirected to Google OAuth
+3. **Google authentication** → Redirected back via Supabase
+4. **Callback processing** → Session established, redirected to dashboard
+5. **Protected routes** → User can access dashboard features
+
+### Key Components
+
+- **UserProvider**: Manages authentication state globally
+- **ProtectedRoute**: Wrapper component for authenticated pages
+- **Middleware**: Handles session refresh and routing
+- **Login page**: Google OAuth interface
+- **Callback handler**: Processes authentication response
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── auth/              # Authentication routes
+│   │   ├── callback/      # OAuth callback handler
+│   │   └── auth-code-error/ # Error handling
+│   ├── login/             # Login page
+│   └── (dashboard)/       # Protected dashboard routes
+├── components/            # React components
+│   ├── auth/             # Authentication components
+│   ├── providers/        # Context providers
+│   └── layout/           # Layout components
+├── lib/                  # Utilities and configurations
+│   └── supabase/         # Supabase client configuration
+├── hooks/                # Custom React hooks
+├── data/                 # Mock data and types
+└── config/               # App configuration
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint for code quality
+- `npm run lint` - Run ESLint
 
-## 🎨 Design System
+## Authentication Features
 
-### **Color Palette**
-- **Primary**: Blue (#2563eb)
-- **Background**: Gradient from #fafbff to #f1f5f9
-- **Text**: Slate gray (#1e293b)
-- **Success**: Green (#10b981)
-- **Warning**: Amber (#f59e0b)
-- **Error**: Red (#ef4444)
+### Current Implementation
 
-### **Typography**
-- **Font**: System UI font stack
-- **Weights**: 400 (regular), 500 (medium), 600 (semibold), 700 (bold)
+✅ **Google OAuth Sign-in**
+✅ **Protected Routes** 
+✅ **User Session Management**
+✅ **Automatic Session Refresh**
+✅ **User Profile Display**
+✅ **Secure Logout**
+✅ **Error Handling**
 
-### **Components**
-- **Glassmorphism Cards**: Semi-transparent backgrounds with blur
-- **Smooth Animations**: CSS transitions and transforms
-- **Responsive Grid**: CSS Grid and Flexbox layouts
+### User Experience
 
-## 🔧 Configuration
+- **Seamless Authentication**: One-click Google sign-in
+- **Session Persistence**: Users stay logged in across browser sessions
+- **Automatic Redirects**: Users are redirected back to intended pages after login
+- **Loading States**: Smooth loading indicators during authentication
+- **Error Handling**: Clear error messages for authentication issues
 
-### **TypeScript Configuration**
-- Strict mode enabled for maximum type safety
-- Path mapping with `@/*` aliases
-- Modern ES features support
+## Customization
 
-### **Tailwind CSS**
-- Custom utility classes for cards and effects
-- CSS variables for theming
-- Responsive design utilities
+### Adding New OAuth Providers
 
-## 📊 Data Management
+1. Enable the provider in Supabase dashboard
+2. Update the login page with new provider button
+3. Configure provider-specific settings
 
-Currently uses mock data for demonstration purposes. The application is structured for easy integration with real APIs:
+### Modifying User Data
 
-- **Type-safe interfaces** for all data structures
-- **Consistent data format** across components
-- **Easy migration path** to real backend services
+- User information is stored in Supabase Auth
+- Profile data accessible via `user.user_metadata`
+- Avatar, name, and email automatically synced from Google
 
-## 🚀 Deployment
+### Styling
 
-### **Vercel (Recommended)**
-```bash
-npm run build
-npx vercel --prod
-```
+- All authentication components use Tailwind CSS
+- Consistent with the overall app design system
+- Responsive and mobile-friendly
 
-### **Netlify**
-```bash
-npm run build
-# Deploy the .next folder
-```
+## Deployment
 
-## 🤝 Contributing
+### Vercel (Recommended)
+
+1. **Deploy to Vercel**:
+   ```bash
+   npm i -g vercel
+   vercel
+   ```
+
+2. **Environment Variables**:
+   - Add your Supabase credentials to Vercel environment variables
+   - Update Google OAuth redirect URLs for production domain
+
+3. **Supabase Configuration**:
+   - Update Site URL in Supabase to your production domain
+   - Add production domain to redirect URLs
+
+### Other Platforms
+
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- AWS Amplify
+- Digital Ocean
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"Missing Supabase environment variables"**
+   - Ensure `.env.local` has correct Supabase URL and key
+   - Check that variables start with `NEXT_PUBLIC_`
+
+2. **Google OAuth not working**
+   - Verify Google OAuth credentials in Supabase
+   - Check redirect URLs match exactly
+   - Ensure Google+ API is enabled
+
+3. **Session not persisting**
+   - Check that middleware is configured correctly
+   - Verify Supabase project settings
+
+4. **Build errors**
+   - Ensure all environment variables are set
+   - Check that Supabase credentials are valid
+
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test authentication flow
+5. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Support
 
-- **Next.js team** for the amazing framework
-- **Tailwind CSS** for the utility-first approach
-- **Recharts** for beautiful data visualization
-- **Heroicons** for the icon library
+For issues and questions:
+- Create an issue on GitHub
+- Check Supabase documentation
+- Review Next.js authentication guides
 
 ---
 
-⭐ **Star this repository if you found it helpful!**
-=======
-# PayMee
-Fintech dashboard
->>>>>>> c4e932791aec3cb134e214d12c639c7441710010
+Built with ❤️ using Next.js, Supabase, and modern web technologies.

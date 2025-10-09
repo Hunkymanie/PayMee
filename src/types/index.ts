@@ -1,3 +1,10 @@
+export interface NavigationItem {
+  name: string
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  description?: string
+}
+
 export interface Transaction {
   id: string
   type: 'income' | 'expense' | 'transfer'

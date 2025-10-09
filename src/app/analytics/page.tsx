@@ -1,11 +1,11 @@
 import DashboardLayout from '@/components/DashboardLayout'
 import AnalyticsCharts from '@/components/AnalyticsCharts'
 import SpendingBreakdown from '@/components/SpendingBreakdown'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
 import { formatCurrency } from '@/lib/utils'
 import { mockDashboardStats } from '@/data/mock'
 import {
   ArrowUpIcon,
-  ArrowDownIcon,
   ArrowTrendingUpIcon as TrendingUpIcon,
   CalendarDaysIcon,
   CreditCardIcon,
@@ -27,7 +27,8 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <DashboardLayout>
+    <ProtectedRoute>
+      <DashboardLayout>
       <div className="space-y-4">
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -335,5 +336,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
     </DashboardLayout>
+    </ProtectedRoute>
   )
 }

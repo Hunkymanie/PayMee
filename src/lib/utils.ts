@@ -27,10 +27,7 @@ export function formatDate(date: Date): string {
 }
 
 export function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
+  // Get only the first letter of the first name
+  const firstName = name.split(' ')[0]
+  return firstName[0]?.toUpperCase() || 'U'
 }

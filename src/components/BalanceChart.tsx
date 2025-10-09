@@ -1,8 +1,6 @@
 'use client'
 
 import { 
-  LineChart, 
-  Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
@@ -16,29 +14,29 @@ import { formatCurrency } from '@/lib/utils'
 
 export default function BalanceChart() {
   return (
-    <div className="compact-card rounded-xl p-6">
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
+    <div className="compact-card rounded-xl p-4 sm:p-6">
+      <div className="mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Financial Overview</h3>
-            <p className="text-slate-500 text-sm mt-1">
+            <h3 className="text-base sm:text-lg font-semibold text-slate-900">Financial Overview</h3>
+            <p className="text-slate-500 text-xs sm:text-sm mt-1">
               Income vs Expenses • Last 12 months
             </p>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
-              <span className="text-sm font-medium text-slate-600">Income</span>
+              <div className="w-3 h-3 bg-blue-600 rounded-full" />
+              <span className="text-xs sm:text-sm font-medium text-slate-600">Income</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-gradient-to-r from-red-400 to-red-500 rounded-full" />
-              <span className="text-sm font-medium text-slate-600">Expenses</span>
+              <div className="w-3 h-3 bg-red-500 rounded-full" />
+              <span className="text-xs sm:text-sm font-medium text-slate-600">Expenses</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="h-64">
+      <div className="h-48 sm:h-64">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}

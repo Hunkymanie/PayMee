@@ -2,22 +2,22 @@
 
 import { useState } from 'react'
 import DashboardLayout from '@/components/DashboardLayout'
-import { mockUser } from '@/data/mock'
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute'
+import { useUser } from '@/components/providers/UserProvider'
+import { generateMockUser } from '@/data/mock'
 import {
   UserIcon,
   ShieldCheckIcon,
   BellIcon,
   CreditCardIcon,
   KeyIcon,
-  DevicePhoneMobileIcon,
-  EyeIcon,
-  EyeSlashIcon,
-  CheckIcon
+  DevicePhoneMobileIcon
 } from '@heroicons/react/24/outline'
 
 export default function SettingsPage() {
+  const { user } = useUser()
+  const currentUser = generateMockUser(user || undefined)
   const [activeTab, setActiveTab] = useState('profile')
-  const [showPassword, setShowPassword] = useState(false)
   const [notifications, setNotifications] = useState({
     transactions: true,
     security: true,
@@ -39,7 +39,8 @@ export default function SettingsPage() {
   }
 
   return (
-    <DashboardLayout>
+    <ProtectedRoute>
+      <DashboardLayout>
       <div className="space-y-6">
         {/* Header */}
         <div>
@@ -81,12 +82,26 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="space-y-6">
+                  {/* Profile Avatar Section */}
+                  <div className="flex items-center gap-6 p-4 bg-slate-50 rounded-lg">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                      {currentUser.firstName.charAt(0)}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-slate-900">{currentUser.firstName} {currentUser.lastName}</h4>
+                      <p className="text-slate-600">{currentUser.email}</p>
+                      <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium text-sm">
+                        Change Profile Picture
+                      </button>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">First Name</label>
                       <input
                         type="text"
-                        defaultValue={mockUser.firstName}
+                        defaultValue={currentUser.firstName}
                         className="w-full border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -94,7 +109,7 @@ export default function SettingsPage() {
                       <label className="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
                       <input
                         type="text"
-                        defaultValue={mockUser.lastName}
+                        defaultValue={currentUser.lastName}
                         className="w-full border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -104,7 +119,7 @@ export default function SettingsPage() {
                     <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
                     <input
                       type="email"
-                      defaultValue={mockUser.email}
+                      defaultValue={currentUser.email}
                       className="w-full border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -113,9 +128,27 @@ export default function SettingsPage() {
                     <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
                     <input
                       type="tel"
-                      defaultValue={mockUser.phone}
+                      defaultValue={currentUser.phone}
+                      placeholder={currentUser.phone ? currentUser.phone : "Add your phone number"}
                       className="w-full border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
+                  </div>
+
+                  {/* Account Information */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Account Status</label>
+                      <div className="flex items-center gap-2 p-3 border border-green-200 bg-green-50 rounded-lg">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-green-700 font-medium">Verified Account</span>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Member Since</label>
+                      <div className="p-3 border border-slate-200 bg-slate-50 rounded-lg">
+                        <span className="text-slate-600">{user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Recently'}</span>
+                      </div>
+                    </div>
                   </div>
 
                   <button className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium">
@@ -157,7 +190,11 @@ export default function SettingsPage() {
                         <div>
                           <h4 className="font-medium text-slate-900">Two-Factor Authentication</h4>
                           <p className="text-sm text-slate-500">
-                            <span className="text-green-600 font-medium">Enabled</span> • SMS to +234 803 ***-4567
+                            {currentUser.phone ? (
+                              <><span className="text-green-600 font-medium">Enabled</span> • SMS to {currentUser.phone.replace(/(.{4})(.{3})(.{3})(.{4})/, '$1 $2 ***-$4')}</>
+                            ) : (
+                              <><span className="text-amber-600 font-medium">Setup Required</span> • Add phone number to enable SMS 2FA</>
+                            )}
                           </p>
                         </div>
                       </div>
@@ -326,5 +363,6 @@ export default function SettingsPage() {
         </div>
       </div>
     </DashboardLayout>
+    </ProtectedRoute>
   )
 }

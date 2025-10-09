@@ -2,13 +2,25 @@
 
 import { useState } from 'react'
 import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, CalendarIcon } from '@heroicons/react/24/outline'
+import { useTransactionContext } from '@/contexts/TransactionContext'
 
 export default function TransactionFilters() {
+  const { 
+    filter, 
+    setFilter, 
+    searchTerm, 
+    setSearchTerm,
+    category,
+    setCategory,
+    status,
+    setStatus,
+    filteredCount,
+    totalCount
+  } = useTransactionContext()
+  
+  // Local state for date range (not yet connected to filtering)
   const [dateRange, setDateRange] = useState('30days')
-  const [category, setCategory] = useState('all')
-  const [status, setStatus] = useState('all')
-  const [searchTerm, setSearchTerm] = useState('')
-
+  
   return (
     <div className="bg-white/70 backdrop-blur-xl rounded-xl border border-white/20 shadow-xl shadow-slate-900/5 p-4">
       <div className="flex flex-col xl:flex-row xl:items-center gap-3">
@@ -47,6 +59,17 @@ export default function TransactionFilters() {
             </div>
             
             <select 
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as 'all' | 'income' | 'expense' | 'transfer')}
+              className="px-3 py-2 bg-slate-50 border-0 rounded-lg text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all duration-200 appearance-none cursor-pointer"
+            >
+              <option value="all">All Types</option>
+              <option value="income">Income</option>
+              <option value="expense">Expenses</option>
+              <option value="transfer">Transfers</option>
+            </select>
+            
+            <select 
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="px-3 py-2 bg-slate-50 border-0 rounded-lg text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition-all duration-200 appearance-none cursor-pointer"
@@ -54,7 +77,9 @@ export default function TransactionFilters() {
               <option value="all">All Categories</option>
               <option value="salary">Salary</option>
               <option value="groceries">Groceries</option>
+              <option value="transfer">Transfer</option>
               <option value="transportation">Transportation</option>
+              <option value="freelance">Freelance</option>
               <option value="utilities">Utilities</option>
               <option value="entertainment">Entertainment</option>
               <option value="investment">Investment</option>
@@ -73,13 +98,11 @@ export default function TransactionFilters() {
           </div>
           
           <div className="flex items-center gap-2">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 shadow-lg shadow-blue-600/25">
-              Apply Filters
-            </button>
+            {/* Results Counter */}
+            <div className="text-xs text-slate-600 font-medium px-3 py-2 bg-slate-100 rounded-lg">
+              {filteredCount} of {totalCount} transactions
+            </div>
             
-            <button className="px-3 py-2 text-slate-600 hover:text-slate-900 text-xs font-medium hover:bg-slate-100 rounded-lg transition-all duration-200">
-              Reset
-            </button>
           </div>
         </div>
       </div>
